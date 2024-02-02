@@ -1,0 +1,20 @@
+create table student(
+id number primary key not null,
+name varchar2(20),
+address varchar2(20),
+grade number);
+
+insert into student values(2,'mohamed','alex',90);
+insert into student values(3,'ali','alex',90);
+insert into student values(4,'eman','alex',90);
+insert into student values(5,'ragab','alex',90);
+insert into student values(6,'said','alex',90);
+insert into student values(7,'mahmoud','alex',90);
+insert into student values(8,'mido','alex',90);
+insert into student values(9,'zaki','alex',90);
+insert into student values(10,'fady','alex',90);
+insert into student values(11,'ramy','alex',90);
+insert into student values(12,'samir','alex',90);
+insert into student values(13,'saad','alex',90);
+
+select name from student where grade>85 order by name;

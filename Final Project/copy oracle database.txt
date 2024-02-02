@@ -1,0 +1,19 @@
+To copy oracle database of user XXXXX with password YYYYY do :
+ 
+1- Run commend prompt (from --> start --> run cmd).
+2- Write commend EXP (c:\Documents and Settings\Administrator> EXP).
+3- Login with username XXXXX and password YYYYY(Username: XXXX
+                                                                                                Password: YYYYY).
+4- Press enter just enter for the message ( Enter array fetch buffer size: 4096 > ).
+5- He will ask u for file( Export file: EXPDAT.DMP > ).
+6- Write full pass and file name to have with extention DMP to have all the tables of the user XXXX   ,its data, its trigger & any thing else related to this user (Export file: EXPDAT.DMP > c:\copy.dmp).
+7- Accept all defaults for this four message just press enter :
+                                                 (1)E(ntire database), (2)U(sers), or (3)T(ables): (2)U >
+                                                 Export grants (yes/no): yes >
+                                                 Export table data (yes/no): yes >
+                                                 Compress extents (yes/no): yes >
+8- Then he will ask which user u want copy its data(User to be exported: (RETURN to quit) >).
+9- Write ur user name XXXXX(User to be exported: (RETURN to quit) >XXXXX).
+10- He will ask again if wanna to copy another user's data write its name if not just enter to finish.
+11- Now u have the file c:\copy.bmp have ur data.
+12- To import this file in any oracle database first it must have user(s) with name XXXXX and the other names if u copied from more than one user. Second do the same as above but with IMP ont EXP.     

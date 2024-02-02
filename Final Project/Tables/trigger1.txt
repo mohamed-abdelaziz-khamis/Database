@@ -1,0 +1,38 @@
+CREATE OR REPLACE TRIGGER "PROJ1"."INS_TRANSC_PREQ" 
+BEFORE INSERT OR UPDATE OF "COURSE_ID", "SEMESTER", "STUD_ID" ON "PROJ1"."TRANSCRIPT" 
+FOR EACH ROW 
+
+
+
+-- Transcript
+declare
+
+cursor course_cur is select prerequisite_no,min_grade from crs_crs where(:new.course_id=required_crs_id); 
+req crs_crs.prerequisite_no%TYPE;
+ming crs_crs.min_grade%TYPE; 
+flag number(1);
+g number(1):=0;
+occurence number(2):=0;       
+begin
+
+flag:=0;
+open course_cur;
+  fetch course_cur into req,ming;
+  while(course_cur%FOUND and flag<>1)
+  loop
+  
+       select count(*)into occurence from grade
+             where (grade.course_ID=req and grade.stud_ID=:new.stud_ID);
+       if (occurence < course_cur%rowcount )then flag:=1;
+       else 
+         select grade into g from grade where course_id=req and stud_id= :new.stud_ID;
+         if (g < ming) then flag:=1;
+         end if;
+       end if;
+       fetch course_cur into req,ming;
+ end loop;
+close course_cur;
+ if flag=1  then raise_application_error(-20268,' You did not match Prerequisites');
+ end If;
+end;  
+    

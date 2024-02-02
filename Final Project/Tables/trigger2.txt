@@ -1,0 +1,35 @@
+
+CREATE OR REPLACE TRIGGER "PROJ1"."UP_GRADE_GPA" BEFORE INSERT OR DELETE OR UPDATE OF "COURSE_ID", "GRADE", "STUD_ID" ON "PROJ1"."GRADE" FOR EACH ROW 
+
+
+--grade
+declare
+
+
+sgpa student.gpa%type;
+ch course.course_hours%type;
+t student.total_hours%type;
+
+begin
+
+  if (:new.grade>0) then
+  update transcript set status=2 where stud_id=:new.stud_id and course_id=:new.course_id; 
+  end if;
+  
+  select gpa,total_hours into sgpa,t from student where stud_id=:new.stud_id;
+  select course_hours into ch from course where course_id=:new.course_id;
+  sgpa:=((sgpa*t)+ch*(:new.grade))/(t+ch);
+  t:=t+ch;
+  UPDATE STUDENT SET TOTAL_HOURS = t, gpa = sgpa WHERE  stud_id = :new.stud_id;
+ 
+end;
+
+
+
+
+
+
+
+
+
+

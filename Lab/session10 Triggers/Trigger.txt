@@ -1,0 +1,45 @@
+create or replace trigger Age_Cal
+before insert or update of DOB on Employee3
+for each row
+
+begin
+    :new.Age := (sysdate-:new.DOB)/365;
+
+end;
+
+create or update trigger Emp_Dept
+before insert or update of dept_No on employee3
+for each row
+declare Num number;
+BEGIN
+     select count(*) into Num from employee3 
+    where Dept_No=:new.dept_no;
+    
+    if (Num>=8) then
+      if inserting then
+        raise_application_error(-20235,'exist more than 8 employee');
+      end if;
+      if updating then
+        :new.dept_no := :old.dept_no;
+      end if;
+    end if;
+END;
+
+
+BEGIN
+  if(:new.age<18)then
+        raise_application_error(-20236,'Age<18');
+  end if;
+END;
+
+
+declare 
+  mindept number;
+  maxdept number;
+BEGIN
+ select max (count(*) ) into maxdept from employeef4 group by dept;
+ select min (count(*) ) into mindept from employeef4 group by dept;
+ if((maxdept-mindept )>10) then
+        raise_application_error(-20237,'My error');
+ end if;
+end;

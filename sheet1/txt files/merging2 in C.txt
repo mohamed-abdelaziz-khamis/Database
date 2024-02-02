@@ -1,0 +1,54 @@
+void  getrecord (int k,int f1,int f2,int used[ ],int i,bool fin[ ],stud_record current[ ]) 
+     {/*advance file f1, but not beyond the end of the file or the end of the block,
+        Set fin[i] if end of file or block found*/
+    
+         used[i]= used[i] + 1;
+         if (used[i] = =k  ||   i = =0  && eof (f1) || i = =1 && eof (f2) )
+             fin[i] = true;
+          else if (i = =1)  read (f1,current [0]);
+          else read (f2,current[1]);
+      } // end getrecord
+
+void  merge (int k , int f1,int f2,int g1,int g2)
+{ 
+    //k:the input block length
+    //f1,f2,g1,g2: The file handlers of 4 files of stud_record type
+
+      bool outswitch;  //tells if writing g1:true or g2:false
+      int winner ;        //selects file with smaller key in current record
+      int used[2];    /*used [j] tells how many records have been read so far from                                                        the current block of file fj*/
+      bool fin[2];  /*fin [j] is true if we have finished the block from fj-either we                                                      have read k records, or reached the end of the file of fj*/
+      stud_record current[2];   //the current records from the two files
+
+          outswitch = true;           //first merged block goes to g1
+          rewrite(g1);      rewrite(g2);
+          reset(f1);          reset(f2);
+          while ( !eof(f1) || !eof(f2) ) 
+                 {// begin merge two files
+
+                   //initialize
+                   used[0] = 0;  used [1]=0;
+                   fin[0]=false;  fin[1]=false;
+                   getrecord (k,f1,f2,used,0,fin,current); 
+                   getrecord (k,f1,f2,used,1,fin,current); 
+                   while ( !fin[0] ||  !fin[1] )
+                           {// begin merge two blocks
+                           
+                            //select winner
+                             if (fin[0])  winner = 1;
+                                  //f2 wins by "default"- block from f1 exhausted
+                           else if (fin[1]) winner = 0;
+                                  //f1 wins by default
+                           else  //neither block exhausted
+                                   if (current [0].key < current[1].key) winner = 0;
+                                   else winner = 1;
+                            //write winning record
+                            if (outswitch)  write (g1,current[winner]);
+                            else write (g2,cuurent[winner]);
+                            //advance winning file
+                             getrecord (k,f1,f2,used,winner,fin,current); 
+                           }
+                   //we have finished merging two blocks-switch output file and repeat
+                    outswitch = !outswitch;
+          }
+    }

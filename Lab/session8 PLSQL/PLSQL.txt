@@ -1,0 +1,62 @@
+CREATE OR REPLACE FUNCTION COUNT_EMP(DNO NUMBER)
+RETURN NUMBER 
+IS 
+C NUMBER;
+BEGIN 
+	SELECT COUNT(EMP.ENO) INTO C  
+	FROM EMP WHERE EMP.DEPT=DNO;
+	RETURN(C);
+END COUNT_EMP;
+
+SELECT COUNT_EMP(0) FROM DUAL;
+
+PROCEDURE Year IS
+	founded date;
+	cDate char;
+	nYear number;
+BEGIN
+  select to_date('1-jan-1960') into founded from dual;
+  select to_char(founded,'YYYY') into cDate from dual;
+  select to_number(cDate) into nYear from dual;
+  
+  
+  
+END;
+
+create or replace procedure Year()
+ IS
+	founded_a date;
+	cDate char;
+	nYear number;
+	
+BEGIN
+  
+  for dept_rec in (select * from dept) loop
+    select to_char(dept_rec.founded,'YYYY') into cDate from dual;
+    select to_number(cDate) into nYear from dual;
+  	 
+  	if nYear < 1960 then
+  		update dept_rec set founded='1-jan-1960' where DNO = dept_rec.dno
+	End IF;
+  		 
+  end loop;		 
+  
+END;
+
+
+procedure Year
+ IS
+	founded_a date;
+	cDate char;
+	nYear number;
+	
+BEGIN
+  
+  for dept_rec in (select * from dept) loop
+     	if dept_rec.founded<to_date('1-jan-1960') then
+  		update dept set founded='1-jan-1960' where DNO = dept_rec.dno;
+	End IF;
+  		 
+  end loop;		 
+  
+END;

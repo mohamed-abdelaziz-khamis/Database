@@ -1,0 +1,21 @@
+//Merge subfiles until only 1 remains:
+
+set     i<--1;
+          p<--ceil(log(k-1) m); {p is the number of passes for the merging phase}
+          j<--m;
+while (i<=p)
+         do{
+               n<--1;
+               q<--ceil(j/(k-1)); {number of subfiles to write in this pass}
+               while (n<=q)
+                      do{
+                            read next k-1 subfiles or remaining subfiles(from previous pass) one block                              at a time; merge and write as new subfile one block at a time;
+                            n<--n+1;
+                          }
+                j<--q;
+                i<--i+1;
+             }
+
+b   {size of the file in blocks}
+k  {size of buffer in blocks}
+m<--ciel(b/k);      {number of subfiles}

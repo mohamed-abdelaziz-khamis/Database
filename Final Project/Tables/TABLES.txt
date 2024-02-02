@@ -1,0 +1,296 @@
+drop table crs_crs; 
+drop table schedule; 
+drop table transcript;  
+drop table classroom; 
+drop table classes;
+drop table grade;
+drop table course;
+drop table student;
+drop table qualification;
+drop table professor;
+drop table possible_grades;
+drop table possible_status;
+drop table temp_schedule;
+
+
+
+
+
+CREATE TABLE professor(
+prof_id NUMBER(3) UNIQUE NOT NULL,
+name VARCHAR2(20) NOT NULL,
+prof_password VARCHAR2(20) UNIQUE NOT NULL,
+telephone NUMBER(20) NOT NULL,
+address VARCHAR2(50), 			
+PRIMARY KEY (prof_id));
+
+
+CREATE TABLE qualification(
+prof_id NUMBER(3) NOT NULL,
+qual_no NUMBER(1) NOT NULL,
+name VARCHAR2(10) NOT NULL,
+PRIMARY KEY(PROF_ID,QUAL_NO),
+FOREIGN KEY(PROF_ID) REFERENCES PROFESSOR(PROF_ID));
+
+CREATE TABLE STUDENT(
+STUD_id NUMBER(5) UNIQUE NOT NULL,
+name VARCHAR2(20) NOT NULL,
+stud_password VARCHAR2(20) UNIQUE NOT NULL,
+telephone NUMBER(20),
+address VARCHAR2(50),
+GPA NUMBER(4),
+total_hours number(2),
+gender varchar2(1),   			
+PRIMARY KEY (STUD_id));
+
+
+
+
+CREATE TABLE COURSE(
+ course_id	number(3)	Unique Not null,
+ name	        character(20)	Unique Not null,
+ course_hours	number(2)	Not null,	
+ PRIMARY KEY (COURSE_id));
+
+
+CREATE TABLE possible_GRADES(
+grade_value NUMBER(1)  unique NOT NULL,
+grade_char varchar2(1) unique NOT NULL,
+primary key(grade_value));
+
+
+CREATE TABLE GRADE(
+STUD_id NUMBER(5)   NOT NULL,
+COURSE_ID NUMBER(3) NOT NULL,
+GRADE number(1) NOT NULL,			
+PRIMARY KEY (STUD_ID,COURSE_ID),
+FOREIGN KEY(STUD_ID) REFERENCES STUDENT(STUD_ID),
+FOREIGN KEY(COURSE_ID) REFERENCES COURSE(COURSE_ID),
+FOREIGN KEY(grade) REFERENCES possible_grades(grade_value));
+
+
+CREATE TABLE classes(
+COURSE_id NUMBER(3) NOT NULL,
+SEMESTER NUMBER(1) NOT NULL,
+year_no NUMBER(4) NOT NULL,
+PROF_ID NUMBER(3) NOT NULL,
+PRIMARY KEY (course_id,semester,year_no),
+FOREIGN KEY(COURSE_ID) REFERENCES COURSE(COURSE_ID),
+FOREIGN KEY(PROF_ID) REFERENCES PROFESSOR(PROF_ID));
+
+
+
+CREATE TABLE CLASSROOM(
+ classroom_id	number(2)	Unique  Not null,
+ location	character(20)	Not null,
+ capacity	number(2)	Not null,
+ PRIMARY KEY (CLASSROOM_id));
+
+
+create table possible_status(
+status_value NUMBER(1)  unique NOT NULL,
+name varchar2(10) unique NOT NULL,
+primary key(status_value));
+
+
+CREATE TABLE TRANSCRIPT(
+stud_id	        number(5)	Not null,
+course_id	number(3)	Not null,
+semester	number(1)	NOT NULL,
+year_no	        number(4)	NOT NULL,
+status	        number(1)	NOT NULL,	
+PRIMARY KEY (stud_id,course_id,semester,year_no),
+FOREIGN KEY(STUD_ID) REFERENCES STUDENT(STUD_ID),
+FOREIGN KEY(COURSE_ID, semester, year_no) REFERENCES Classes(COURSE_ID, semester, year_no),
+FOREIGN KEY(status) REFERENCES possible_status(status_value));
+
+
+CREATE TABLE SCHEDULE(
+stud_id	        number(5)	Not null,
+course_id	number(3)       NOT NULL,	
+semester	number(1)       nOT NULL,	
+year_no     	number(4)       NOT NULL,
+DAY_no     	number(1)       NOT NULL,
+start_hour	number(2)	Not null,
+classroom	number(2)	NOT NULL,
+PRIMARY KEY (stud_id, course_id, semester, year_no, DAY_NO, START_HOUR),
+FOREIGN KEY (stud_id, course_id, semester, year_no) REFERENCES TRANSCRIPT(stud_id, course_id, semester, year_no));
+
+
+CREATE TABLE temp_SCHEDULE(
+semester	number(1)       nOT NULL,	
+year_no     	number(4)       NOT NULL,
+DAY_no     	number(1)       NOT NULL,
+start_hour	number(2)	Not null,
+classroom	number(2)	NOT NULL,
+PRIMARY KEY (semester, year_no, DAY_NO, start_hour, classroom));
+
+
+CREATE TABLE CRS_CRS(
+required_crs_id	number(3)	Not null, 
+prerequisite_no	number(3)	Not null, 
+min_grade number(1)          NOT null,  
+PRIMARY KEY (required_crs_id, prerequisite_no),
+FOREIGN KEY(required_crs_id) REFERENCES COURSE(COURSE_ID),
+FOREIGN KEY(prerequisite_no) REFERENCES COURSE(COURSE_ID));
+
+
+INSERT INTO professor
+(prof_id, name, prof_password, telephone, address)
+VALUES (1,'a','password1',11111,'address1');
+
+INSERT INTO professor
+(prof_id, name, prof_password, telephone, address)
+VALUES (2,'b','password2',22222,'address2');
+
+
+INSERT INTO QUALIFICATION
+(prof_id,qual_no, name)
+VALUES (1,1,'MASTER');
+
+INSERT INTO QUALIFICATION
+(prof_id,qual_no, name)
+VALUES (1,2,'DOCTOR');
+
+INSERT INTO QUALIFICATION
+(prof_id,qual_no, name)
+VALUES (2,1,'MASTER');
+
+INSERT INTO QUALIFICATION
+(prof_id,qual_no, name)
+VALUES (2,2,'DOCTOR');
+
+
+INSERT INTO STUDENT
+(stud_id, name, stud_password, telephone, address,GENDER)
+VALUES (1,'a','Spassword1',11111,'address1','M');
+
+INSERT INTO STUDENT
+(stud_id, name, stud_password, telephone, address,GENDER)
+VALUES (2,'b','Spassword2',22222,'address2','M');
+
+INSERT INTO STUDENT
+(stud_id, name, stud_password, telephone, address,GENDER)
+VALUES (3,'c','Spassword3',33333,'address3','M');
+
+INSERT INTO STUDENT
+(stud_id, name, stud_password, telephone, address,GENDER)
+VALUES (4,'d','Spassword4',44444,'address4','M');
+
+INSERT INTO STUDENT
+(stud_id, name, stud_password, telephone, address,GENDER)
+VALUES (5,'e','Spassword5',55555,'address5','M');
+
+INSERT INTO STUDENT
+(stud_id, name, stud_password, telephone, address,GENDER)
+VALUES (6,'f','Spassword6',66666,'address6','F');
+
+INSERT INTO STUDENT
+(stud_id, name, stud_password, telephone, address,GENDER)
+VALUES (7,'g','Spassword7',77777,'address7','F');
+
+INSERT INTO STUDENT
+(stud_id, name, stud_password, telephone, address,GENDER)
+VALUES (8,'h','Spassword8',88888,'address8','F');
+
+INSERT INTO STUDENT
+(stud_id, name, stud_password, telephone, address,GENDER)
+VALUES (9,'i','Spassword9',99999,'address9','F');
+
+
+
+INSERT INTO COURSE
+(course_id, name, course_hours)
+VALUES (1,'A',2);
+
+INSERT INTO COURSE
+(course_id, name, course_hours)
+VALUES (2,'B',2);
+
+INSERT INTO COURSE
+(course_id, name, course_hours)
+VALUES (3,'C',2);
+
+INSERT INTO COURSE
+(course_id, name, course_hours)
+VALUES (4,'D',2);
+
+INSERT INTO classes
+(course_id,semester,year_no, prof_id) 
+VALUES (1,1,2004,1);
+
+INSERT INTO classes
+(course_id,semester,year_no, prof_id) 
+VALUES (2,1,2004,1);
+
+INSERT INTO classes
+(course_id,semester,year_no, prof_id) 
+VALUES (3,1,2004,2);
+
+INSERT INTO classes
+(course_id,semester,year_no, prof_id) 
+VALUES (4,1,2004,2);
+
+
+INSERT INTO POSSIBLE_STATUS (STATUS_VALUE ,NAME ) VALUES (0 ,'registered');
+INSERT INTO POSSIBLE_STATUS (STATUS_VALUE ,NAME ) VALUES (1 ,'enrolled');
+INSERT INTO POSSIBLE_STATUS (STATUS_VALUE ,NAME ) VALUES (2 ,'completed');
+
+
+INSERT INTO TRANSCRIPT
+(stud_id, course_id, semester, year_no, status)
+VALUES (1,1,1,2004,2);
+
+INSERT INTO TRANSCRIPT
+(stud_id, course_id, semester, year_no, status)
+VALUES (1,2,1,2004,2);
+
+INSERT INTO TRANSCRIPT
+(stud_id, course_id, semester, year_no, status)
+VALUES (2,1,1,2004,2);
+
+INSERT INTO TRANSCRIPT
+(stud_id, course_id, semester, year_no, status)
+VALUES (2,2,1,2004,2);
+
+
+INSERT INTO POSSIBLE_GRADEs (GRADE_VALUE ,GRADE_CHAR ) VALUES (4 ,'A'  );
+INSERT INTO POSSIBLE_GRADEs (GRADE_VALUE ,GRADE_CHAR ) VALUES (3 ,'B'  );
+INSERT INTO POSSIBLE_GRADEs (GRADE_VALUE ,GRADE_CHAR ) VALUES (2 ,'C'  );
+INSERT INTO POSSIBLE_GRADEs (GRADE_VALUE ,GRADE_CHAR ) VALUES (1 ,'D'  );
+INSERT INTO POSSIBLE_GRADEs (GRADE_VALUE ,GRADE_CHAR ) VALUES (0 ,'E'  );
+
+
+INSERT INTO GRADE
+(stud_id,course_id, grade)
+VALUES (1,1,4);
+
+INSERT INTO GRADE
+(stud_id,course_id, grade)
+VALUES (1,2,0);
+
+INSERT INTO GRADE
+(stud_id,course_id, grade)
+VALUES (2,1,4);
+
+INSERT INTO GRADE
+(stud_id,course_id, grade)
+VALUES (2,2,3);
+
+
+
+
+INSERT INTO CLASSROOM
+(classroom_id, location, capacity) 
+VALUES (1,'AA',20);
+
+INSERT INTO CLASSROOM
+(classroom_id, location, capacity) 
+VALUES (2,'BB',30);
+
+
+
+
+commit;
+
+

@@ -1,0 +1,67 @@
+create table Departmentf2(
+	dname varchar2 (30),
+	dno number,
+	founded date,
+	primary key (dno)); 
+
+create table Employeef2(
+	ename varchar2(30),
+	eno number,
+	dob date,
+	age number,
+	dept number,
+	primary key (eno),
+	foreign key (dept) references Departmentf2(dno));
+
+
+insert into Departmentf2 (dno, dname)
+	values (1, 'dept1');
+insert into Departmentf2 (dno, dname)
+	values (2, 'dept2');
+insert into Departmentf2 (dno, dname)
+	values (3, 'dept3');
+
+insert into Employeef2 (eno, ename, dept)
+	values (1, 'emp1', 1);
+insert into Employeef2 (eno, ename, dept)
+	values (2, 'emp2', 1);
+insert into Employeef2 (eno, ename, dept)
+	values (3, 'emp3', 1);
+insert into Employeef2 (eno, ename, dept)
+	values (4, 'emp4', 1);
+
+insert into Employeef2 (eno, ename, dept)
+	values (5, 'emp5', 2);
+insert into Employeef2 (eno, ename, dept)
+	values (6, 'emp6', 2);
+insert into Employeef2 (eno, ename, dept)
+	values (7, 'emp7', 2);
+insert into Employeef2 (eno, ename, dept)
+	values (8, 'emp8', 2);
+
+insert into Employeef2 (eno, ename, dept)
+	values (9, 'emp9', 3);
+insert into Employeef2 (eno, ename, dept)
+	values (10, 'emp10', 3);
+insert into Employeef2 (eno, ename, dept)
+	values (11, 'emp11', 3);
+insert into Employeef2 (eno, ename, dept)
+	values (12, 'emp12', 3);
+
+commit;
+
+
+create or replace trigger 
+after
+begin
+
+end;
+
+
+
+create user zizo as zizo;
+
+
+
+commit;
+

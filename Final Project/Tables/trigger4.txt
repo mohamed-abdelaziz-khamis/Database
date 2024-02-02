@@ -1,0 +1,7 @@
+CREATE OR REPLACE TRIGGER "PROJ1"."INS_STU_GPA" BEFORE INSERT ON "PROJ1"."STUDENT" FOR EACH ROW 
+
+--student
+begin
+:new.gpa:=0;
+:new.total_hours:=0;
+end; 

@@ -1,0 +1,23 @@
+Sheet 10
+1)
+a) Grant select any table,insert any table,update any table,
+   delete any table to A;
+   Revoke select ,insert ,update ,delete on Dependent from A;
+b) Grant select on Employee,Department to B;
+   Revoke select on Employee (salary),Department(MgrSSN),
+   Department(MgrStartDate) to B;
+c) Grant select ,insert ,update ,delete on Works_On to C;
+   Grant select on Employee(Fname),Employee(Minit),Employee(Lname),
+   Employee(SSN),Project(Pname),Project(Pnumber) to C;
+d) Grant select on Employee,Department to D;
+   Grant select ,insert ,update ,delete on Dependent to D;
+
+e) Create view E_view As
+   select * from Employee Where DNO=3;
+   Grant Select on E_view to E;
+
+2) Grant select any table,insert any table,update any table,
+   delete any table to A with Grant Option;
+   Revoke select ,insert ,update ,delete on Dependent from A;
+   horizontal=5
+   vertical=1

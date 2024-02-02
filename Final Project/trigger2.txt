@@ -1,0 +1,74 @@
+/////////////////////// old ////////////////////////////////////////////////
+CREATE OR REPLACE TRIGGER "PROJ1"."UP_GRADE_GPA" BEFORE INSERT OR DELETE OR UPDATE OF "COURSE_ID", "GRADE", "STUD_ID" ON "PROJ1"."GRADE" FOR EACH ROW declare
+sgpa student.gpa%type;
+ch course.course_hours%type;
+t student.total_hours%type;
+begin
+
+  if inserting then
+  select gpa,total_hours into sgpa,t from student where stud_id=:new.stud_id;
+  select course_hours into ch from course where course_id=:new.course_id;
+  sgpa:=((sgpa*t)+ch*(:new.grade))/(t+ch);
+  t:=t+ch;
+  UPDATE STUDENT SET TOTAL_HOURS = t, gpa = sgpa WHERE  stud_id = :new.stud_id;
+ 
+  elsif deleting then
+  select gpa,total_hours into sgpa,t from student where stud_id=:old.stud_id;
+  select course_hours into ch from course where course_id=:old.course_id;
+  sgpa:=((sgpa*t)-ch*(:old.grade))/(t+ch);
+  t:=t-ch;
+  UPDATE STUDENT SET TOTAL_HOURS = t, gpa = sgpa WHERE  stud_id = :old.stud_id;
+ 
+  
+  elsif updating('course_id') then
+  select gpa,total_hours into sgpa,t from student where stud_id=:old.stud_id;
+  select course_hours into ch from course where course_id=:old.course_id;
+  sgpa:=((sgpa*t)-ch*(:old.grade))/(t+ch);
+  t:=t-ch;
+  select course_hours into ch from course where course_id=:new.course_id;
+  sgpa:=((sgpa*t)+ch*(:old.grade))/(t+ch);
+  t:=t+ch;
+  UPDATE STUDENT SET TOTAL_HOURS = t, gpa = sgpa WHERE  stud_id = :new.stud_id;
+ 
+ elsif updating('stud_id') then
+  select gpa,total_hours into sgpa,t from student where stud_id=:old.stud_id;
+  select course_hours into ch from course where course_id=:old.course_id;
+  sgpa:=((sgpa*t)-ch*(:old.grade))/(t+ch);
+  t:=t-ch;
+  select gpa,total_hours into sgpa,t from student where stud_id=:new.stud_id;
+  sgpa:=((sgpa*t)+ch*(:old.grade))/(t+ch);
+  t:=t+ch;
+  UPDATE STUDENT SET TOTAL_HOURS = t, gpa = sgpa WHERE  stud_id = :new.stud_id;
+  
+  elsif updating('grade') then
+  select gpa,total_hours into sgpa,t from student where stud_id=:old.stud_id;
+  select course_hours into ch from course where course_id=:old.course_id;
+  sgpa:=((sgpa*t)-ch*(:old.grade))/(t+ch);
+  t:=t-ch;
+  sgpa:=((sgpa*t)+ch*(:new.grade))/(t+ch);
+  t:=t+ch;
+  UPDATE STUDENT SET TOTAL_HOURS = t, gpa = sgpa WHERE  stud_id = :new.stud_id;
+  end if;
+end;
+
+
+
+///////////////// old /////////////////////////////
+
+
+
+
+
+CREATE OR REPLACE TRIGGER "PROJ1"."UP_GRADE_GPA" AFTER INSERT OR DELETE OR UPDATE OF "COURSE_ID", "GRADE", "STUD_ID" ON "PROJ1"."GRADE" FOR EACH ROW declare
+sgpa student.gpa%type;
+ch course.course_hours%type;
+t student.total_hours%type;
+begin
+
+  select gpa,total_hours into sgpa,t from student where stud_id=:new.stud_id;
+  select course_hours into ch from course where course_id=:new.course_id;
+  sgpa:=((sgpa*t)+ch*:new.grade)/(t+ch);
+  t:=t+ch;
+  UPDATE STUDENT SET TOTAL_HOURS = t, gpa = sgpa WHERE  stud_id = :new.stud_id;
+ 
+end;

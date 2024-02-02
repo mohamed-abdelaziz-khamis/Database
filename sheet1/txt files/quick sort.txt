@@ -1,0 +1,78 @@
+int find_pivot(int A[],int i,int j)
+{
+/*Determine whether the keys of A[i],..,A[j] are all the same.
+"find_pivot" never finds two different keys, it returns -1.
+Otherwise,it returns the index of the larger of the first two different keys,
+this larger key becomes the pivot element.*/
+
+/*The procedure "find pivot":
+returns -1 if A[i],...,A[j] have identical keys(not different),
+otherwise,returns the index of the larger of the left most two different keys*/
+ int first_key; //the value of first key found
+ int k; // runs left to right looking for a different key
+ first_key=A[i];
+ for (k=i+1;k<=j;k++) // scan for different key
+    {
+     if (A[k]>first_key) // select larger key
+       {
+	 comparisons++;
+	 return k;
+	}
+     else if (A[k]<first_key)
+	{
+	 comparisons+=2;
+	 return i;
+	}
+     else comparisons+=2;
+    }
+ return -1; // different keys were never found
+}
+
+int partition(int A[],int i,int j,int pivot)
+{
+/*The procedure "partition":
+ partition A[i],.., A[j] so keys < pivot are at the left
+ and keys >= pivot are on the right.
+ Returns the beginning of the group on the right. */
+ int L,R; // the cursors
+ L=i;
+ R=j;
+ do
+ {
+  changes+=2;
+  swap(A[L],A[R]);
+  if(flags==1) simulation(A);
+   // now the scan phase begins
+  comparisons++;
+  while (A[L] < pivot)
+       {
+	L=L+1;
+	comparisons++;
+       }
+  comparisons++;
+  while (A[R] >= pivot)
+       {
+	R=R-1;
+	comparisons++;
+       }
+ }
+ while(L<=R);
+ return L;
+}
+
+void quick_sort(int A[],int i,int j)
+{
+  /*The procedure "quick_sort":
+    sorts elements A[i],...,A[j] of external array A */
+    int pivot; // the pivot value
+    int  pivot_index; // the index of an element of A where key is the pivot.
+    int  k;// the beginning index for group of elements >= pivot
+    pivot_index=find_pivot(A,i,j);
+    if (pivot_index != -1)   // do nothing if all keys are equal
+	 {
+	   pivot= A[pivot_index];
+	   k=partition(A,i,j,pivot);
+	   quick_sort(A,i,k-1);
+	   quick_sort(A,k,j);
+	 }
+}

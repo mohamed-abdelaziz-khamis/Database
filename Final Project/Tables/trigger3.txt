@@ -1,0 +1,14 @@
+
+CREATE OR REPLACE TRIGGER "PROJ1"."INS_SHED_TEMP" BEFORE INSERT OR DELETE OR UPDATE OF "CLASSROOM", "COURSE_ID", "SEMESTER", "START_HOUR", "STUD_ID", "YEAR_NO" ON "PROJ1"."SCHEDULE" FOR EACH ROW 
+
+--schedule
+begin
+
+if inserting then
+  insert into temp_schedule (semester,year_no,DAY_NO,start_hour,classroom) values (:new.semester,:new.year_no,:new.DAY_no,:new.start_hour,:new.classroom);
+elsif deleting then
+  delete from temp_schedule where semester=:old.semester and year_no=:old.year_no and DAY_no=:old.DAY_no and start_hour=:old.start_hour and classroom=:old.classroom;
+  elsif updating then
+  update temp_schedule set semester=:new.semester , year_no=:new.year_no , DAY_no=:new.DAY_no , start_hour=:new.start_hour , classroom=:new.classroom where semester=:old.semester and year_no=:old.year_no and start_hour=:old.start_hour and classroom=:old.classroom;
+  end if;
+end; 

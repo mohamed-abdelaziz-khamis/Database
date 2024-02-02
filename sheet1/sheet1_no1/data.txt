@@ -1,0 +1,8 @@
+0,1,Ahmed,Alex,92,
+0,2,Samir,Alex,81,
+0,3,Kamal,Cairo,63,
+0,4,Waleed,Alex,94,
+0,5,Hany,Cairo,87,
+0,6,Hatem,Miami,90,
+0,7,Kareem,Alex,97,
+0,8,Mohamed,Cairo,80,

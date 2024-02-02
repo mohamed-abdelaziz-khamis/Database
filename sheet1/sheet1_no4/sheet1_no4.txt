@@ -1,0 +1,74 @@
+Number 4:
+Index:
+The master file is sorted according to the student number
+The index file is sorted according to the student number
+ Index file:
+ Record: deleted, student number, relative address of the record
+Both the index file and the master are of the same number of records
+There exist a Boolean remark the deleted record
+Add in the transaction file that is not sorted.
+
+Search:
+Binary search in the index file
+If not found search sequentially in the transaction file.
+
+Delete:
+Search for the record firstly
+Change the Boolean to be deleted.
+
+
+Update:
+Search for the record firstly
+Change the values 
+else if you will change the student number: delete the old one then add the new one
+
+Reorganize:
+Merge the transaction file with the master file and rebuild the index.
+
+Examples:
+eg. for master file:
+1 Ahmed Alex 92
+2 Samir Alex 81 
+3 Kamal Cairo 63
+
+e.g. for index file:
+0  1   0
+0  2   52
+0  3   104
+
+e.g. for transaction file:
+0  4 Fahmy Alex 90
+0  5 Karim Cairo 95 
+
+Index hash:
+The master file is unsorted 
+There exist hash table 
+Insert in the end of the main file
+Insert in the correct place according to the hash function
+
+Search:
+According to the hash function
+
+Delete:
+Search for the record firstly
+Change the Boolean to be deleted.
+
+
+Update:
+Search for the record firstly
+Change the values 
+else if you will change the student number: delete the old one then add the new one
+
+Reorganize:
+Copy the master without the deleted records
+Rebuild the hash table according to the hash function.
+Recreate the overflow file
+
+Hash function:
+F(K) = K mod prime  ; prime =23
+
+Index hashed:
+Number of buckets: Each of specific number of records
+At the beginning, the "deleted" field of all records =0;
+
+There exists an overflow file, insert in it if the bucket specified for the record by the hash function is full

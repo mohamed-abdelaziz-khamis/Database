@@ -1,0 +1,59 @@
+CREATE TABLE students3(
+STUDENT_NO NUMBER NOT NULL,
+NAME CHAR(20) NOT NULL,
+ADDRESS CHAR(20) NOT NULL,
+DOB DATE NOT NULL,
+POB CHAR(20) NOT NULL,
+PRIMARY KEY (STUDENT_NO));
+
+INSERT INTO students3
+(STUDENT_NO,NAME,ADDRESS,DOB,POB)
+VALUES (1,'Ahmed','Alex','23-JAN-1983','LEBANON');
+
+INSERT INTO students3
+(STUDENT_NO,NAME,ADDRESS,DOB,POB)
+VALUES (2,'Samir','Alex','12-JAN-1983','CAIRO');
+
+INSERT INTO students3
+(STUDENT_NO,NAME,ADDRESS,DOB,POB)
+VALUES (3,'Kamal','Cairo','26-FEB-1880','AFGHANESTAN');
+
+INSERT INTO students3
+(STUDENT_NO,NAME,ADDRESS,DOB,POB)
+VALUES (4,'Waleed','Alex','1-MAR-1990','AMERICA');
+
+INSERT INTO students3
+(STUDENT_NO,NAME,ADDRESS,DOB,POB)
+VALUES (5,'Hany','Cairo','3-APR-1965','EGYPT');
+
+INSERT INTO students3
+(STUDENT_NO,NAME,ADDRESS,DOB,POB)
+VALUES (6,'Hatem','Miami','28-MAY-1986','AMERICA');
+
+INSERT INTO students3
+(STUDENT_NO,NAME,ADDRESS,DOB,POB)
+VALUES (7,'Kareem','Alex','15-MAR-1982','EGYPT');
+
+INSERT INTO students3
+(STUDENT_NO,NAME,ADDRESS,DOB,POB)
+VALUES (8,'Mohamed','Cairo','19-JUN-1981','EGYPT');
+
+select * from students3;
+
+UPDATE  students3
+SET     (ADDRESS,DOB,POB) = 
+             (select  ADDRESS,DOB,POB
+              from   students3
+              where    NAME='Kamal')
+where  NAME='Ahmed';
+
+select * from students3;
+
+delete from  students3
+where  NAME = 'Mohamed'; 
+              
+select * from students3;
+
+
+
+

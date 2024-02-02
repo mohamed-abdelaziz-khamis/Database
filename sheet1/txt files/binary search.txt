@@ -1,0 +1,12 @@
+void Binary(long x[])
+   {
+    int flag,low,high,mid;long  k;
+    
+    while(low<=high)
+		{		 
+		 mid=(low+high)/2;		
+		 if (k==x[mid]) { flag=1;  break;}
+		 if (k<x[mid])  high=mid-1;
+		 else low=mid+1;		 
+		}	     	   	   
+     }

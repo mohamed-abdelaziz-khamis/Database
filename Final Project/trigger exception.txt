@@ -1,0 +1,25 @@
+in pl_sql(trigger)
+if you select from any table any you think you will have one row
+but this is not happen( you have no row , or you have more than one)
+there will be an exception.....
+to solve this 
+see this example
+//---------------------------
+begin
+   select c_time into date_class from classes where c_room=:new.c_room;
+     
+exception
+           when no_data_found then
+             cou_num :=0 ;
+             commit;
+             ------any more
+             ------
+           when too_many_rows then
+           raise_application_error(-30002,'can not add class in this time');
+           --- any more
+end;
+//-------------------------------------------
+care:
+1)you must have only one exception .
+2)exception must be last thing .
+3) as you see you can use( commit; ) but it no do any thing ?????!!!!!!!!

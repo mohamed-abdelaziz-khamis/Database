@@ -1,0 +1,8 @@
+0,1,Ahmed,Alex,1-1-1900,Alex,
+0,2,Samir,Alex,1-1-1900,Alex,
+0,3,Kamal,Cairo,1-1-1900,Cairo,
+0,4,Waleed,Alex,1-1-1900,Alex,
+0,5,Hany,Cairo,1-1-1900,Cairo,
+0,6,Hatem,Miami,1-1-1900,Miami,
+0,7,Kareem,Alex,1-1-1900,Alex,
+0,8,Mohamed,Cairo,1-1-1900,Cairo,

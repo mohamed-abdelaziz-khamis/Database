@@ -1,0 +1,46 @@
+procedure merge (k:integer ; {the input block length} f1,f2,g1,g2:file of recordtype);
+      outswitch: boolean;  {tells if writing g1(true) or g2(false)}
+      winner: integer ;        {selects file with smaller key in current record}
+      used:array[1..2]of integer; {used [j] tells how many records have been read so far from                                                         the current block of file fj}
+      fin: array [1..2] of boolean; {fin [j] is true if we have finished the block from fj-either we                                                           have read k records, or reached the end of the file of fj}
+      current:array [1..2] of record type; {the current records from the two files}
+
+      procedure getrecord(i:integer); 
+     {advance file f, but not beyond the end of the file or the end of the block,
+       Set fin[i] if end of file or block found} 
+     
+     begin
+          used[i]= used[i] + 1;
+          if (used[i] = k ) or ( i =1 ) and eof (f1) or (i =2 ) and eof ( f2) then fin[i] =true;
+          else if (i =1 ) then read (f1 ,current [1] )
+          else read (f2,current[2])
+     end; {getrecord} 
+     
+     begin {merge}
+          outswitch = true; {first merged block goes to g1}
+          rewrite(g1);rewrite(g2);
+          reset(f1);reset(f2);
+          while not eof(f1) or not eof(f2) do begin { merge two files}
+                   {initialize}
+                   used[1] = 0; used [2]=0;
+                   fin[1]=false; fin[2]=false;
+                   getrecord(1); getrecord(2);
+                   while not fin[1] or not fin[2] do begin {merge two blocks}
+                           {select winner}
+                            if fin[1] then winner = 2
+                                  {f2 wins by "default"- block from f1 exhausted}       
+                           else if fin[2] then winner = 1
+                                  {f1 wins by default}
+                           else {neither block exhausted}
+                                   if current [1].key < current[2].key  then winner = 1
+                                   else winner = 2;
+                                  {write winning record}
+                            if outswitch then write {g1,current[winner])
+                            else write (g2,cuurent[winner]);
+                            {advanec winning file}
+                             getrecord(winner)
+                   end;
+                   {we have finished merging two blocks-switch output file and repeat}
+                    outswitch = not outswitch
+          end
+    end; {merge}
